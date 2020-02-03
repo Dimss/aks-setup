@@ -66,3 +66,24 @@ kubectl create -f block-b.yaml
 # Second allow access from ingress namespace 
 kubectl create -f allow-ingress.yaml
 ```
+
+### Verify the setup
+1. Access to ServiceA and ServiceB
+```bash
+# Get External IP of the ingress controller
+kubectl get services -n ingress-basic
+
+# Access to ServiceA
+curl http://${LB_IP}/servicea/rates
+
+# Access to ServiceB
+curl http://${LB_IP}/serviceb/rates
+
+```
+2. Check Network Policy 
+```bash
+# Connect to serviceA
+kubectl exec -it ${POD_NAME_SERVICE_A} bash
+# From serviceA try to access to serviceB, the request will fail 
+curl http://bitcoin-app-b.b.svc.cluster.local/rates 
+```
