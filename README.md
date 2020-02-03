@@ -30,6 +30,10 @@ az group deployment create \
     --resource-group "test-group-4" \
     --template-file "./_output/test-group-4/azuredeploy.json" \
     --parameters "./_output/test-group-4/azuredeploy.parameters.json"
+
+# Once the cluster read, export KUBECONFIG
+export KUBECONFIG=$(pwd)/_output/test-group-4/kubeconfig/kubeconfig.westeurope.json
+
 ```
 
 2.  Deploy Ingress Controller
@@ -67,11 +71,11 @@ kubectl create -f block-b.yaml
 kubectl create -f allow-ingress.yaml
 ```
 
-### Verify the setup
+### Verify setup
 1. Access to ServiceA and ServiceB
 ```bash
 # Get External IP of the ingress controller
-kubectl get services -n ingress-basic
+LB_IP=$(kubectl get services -n ingress-basic | grep release-name-nginx-ingress-controller | awk '{print $4}')
 
 # Access to ServiceA
 curl http://${LB_IP}/servicea/rates
@@ -83,7 +87,14 @@ curl http://${LB_IP}/serviceb/rates
 2. Check Network Policy 
 ```bash
 # Connect to serviceA
-kubectl exec -it ${POD_NAME_SERVICE_A} bash
+SERVICE_A_POD=$(kubectl get pods -n a | grep Running | cut -f1 -d' ')
+kubectl exec -it ${SERVICE_A_POD} bash -n a
 # From serviceA try to access to serviceB, the request will fail 
 curl http://bitcoin-app-b.b.svc.cluster.local/rates 
+
+# Test vice versa, e.g serviceB do able to talk to service A
+SERVICE_B_POD=$(kubectl get pods -n b | grep Running | cut -f1 -d' ')
+kubectl exec -it ${SERVICE_B_POD} bash -n b
+# From serviceB try to access to serviceA, the request will be done successfully 
+curl http://bitcoin-app-a.a.svc.cluster.local/rates
 ```
