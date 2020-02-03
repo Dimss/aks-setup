@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitcoin-app-a
+  namespace: a
+spec:
+  selector:
+    app: bitcoin-app-a
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080

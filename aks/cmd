@@ -1,0 +1,13 @@
+
+aks-engine generate --api-model ./kubernetes.json
+
+az group create --name test-group-4 --location westeurope
+
+az group deployment create \
+    --name "test-group-4" \
+    --resource-group "test-group-4" \
+    --template-file "./_output/test-group-4/azuredeploy.json" \
+    --parameters "./_output/test-group-4/azuredeploy.parameters.json"
+
+
+

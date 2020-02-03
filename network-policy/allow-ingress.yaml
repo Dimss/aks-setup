@@ -1,0 +1,14 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: b
+  name: frontend-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: bitcoin-app-b
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              ingress: "true"

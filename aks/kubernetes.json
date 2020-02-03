@@ -1,0 +1,39 @@
+{
+  "apiVersion": "vlabs",
+  "properties": {
+    "orchestratorProfile": {
+      "orchestratorType": "Kubernetes",
+      "kubernetesConfig": {
+        "enableRbac": true,
+        "networkPolicy": "calico",
+        "networkPlugin": "azure"
+      }
+    },
+    "masterProfile": {
+      "count": 1,
+      "dnsPrefix": "test-group-4",
+      "vmSize": "Standard_D2_v3"
+    },
+    "agentPoolProfiles": [
+      {
+        "name": "agentpool1",
+        "count": 2,
+        "vmSize": "Standard_B1ms"
+      }
+    ],
+    "linuxProfile": {
+      "adminUsername": "azureuser",
+      "ssh": {
+        "publicKeys": [
+          {
+            "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2Vuv7MONl1SCz+C6OgTHpG1jXbs9itiiznrWh/OG/Co2PpyaTdN/8+a1CM9kmpC5Z0KIjW+0LAB6yTW11SwjHICHXCNikSE+h+hncqUiuj5946c9OYTNYwOu4PlL7JVKbs3Vj3FKCqAQhfzDb2D/ZXclDhuXgvplp7hr9lvPKFfDPfKxOXZz7bG2hRMA1Yf9ro+q0wVViw6PgQMpodwllshQMjFelmi7DsWHeJAmLjC2b446qjlCfefGpCyLjDC2XKCvi/kYnkuXd6J+hBPKcFU6Y28s/WOKXGNEwyKKgQXgbrtSFaSGjruv3nFeocOz2/GHXAAZ3IlIFWspS+zah dima@dimasmac.local"
+          }
+        ]
+      }
+    },
+    "servicePrincipalProfile": {
+      "clientId": "",
+      "secret": ""
+    }
+  }
+}

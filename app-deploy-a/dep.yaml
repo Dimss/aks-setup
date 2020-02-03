@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitcoin-app-a
+  namespace: a
+  labels:
+    app: bitcoin-app-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bitcoin-app-a
+  template:
+    metadata:
+      labels:
+        app: bitcoin-app-a
+    spec:
+      containers:
+        - name: bitcoin-app-a
+          image: docker.io/dimssss/mic-test-app:latest
+          imagePullPolicy: Always
+          env:
+            - name: APP_NAME
+              value: SERVICE-A
+          ports:
+            - containerPort: 8080
